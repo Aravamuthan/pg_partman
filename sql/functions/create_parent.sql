@@ -147,13 +147,13 @@ ELSIF p_type = 'id-static' OR p_type = 'id-dynamic' THEN
     IF v_jobmon_schema IS NOT NULL THEN
         PERFORM update_step(v_step_id, 'OK', 'ID function created');
     END IF;
-END IF;
 
-IF v_jobmon_schema IS NOT NULL THEN
-    v_step_id := add_step(v_job_id, 'Creating partition trigger');
-END IF;
+    IF v_jobmon_schema IS NOT NULL THEN
+        v_step_id := add_step(v_job_id, 'Creating partition trigger');
+    END IF;
 
-EXECUTE 'SELECT @extschema@.create_trigger('||quote_literal(p_parent_table)||')';
+    EXECUTE 'SELECT @extschema@.create_trigger('||quote_literal(p_parent_table)||')';
+END IF;
 
 IF v_jobmon_schema IS NOT NULL THEN
     PERFORM update_step(v_step_id, 'OK', 'Done');
